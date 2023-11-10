@@ -1,51 +1,68 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainView {
     public static void show() {
-        JFrame frame = new JFrame("Menu Padrão");
+        JFrame frame = new JFrame("Chat para conversação - GRUPO 10 - POO II");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); ///TODO use gridlayout
 
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu arquivoMenu = new JMenu("Arquivo");
+        JMenu fileMenu = new JMenu("Arquivo");
+        JMenuItem connectItem = new JMenuItem("Conectar");
 
-        JMenuItem abrirItem = new JMenuItem("Abrir");
-        JMenuItem salvarItem = new JMenuItem("Salvar");
-        JMenuItem sairItem = new JMenuItem("Sair");
+        JMenuItem exitMenu = new JMenuItem("Sair");
 
-        abrirItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para abrir um arquivo
-            }
-        });
+        JMenu helpMenu = new JMenu("Ajuda");
+        JMenuItem helpItem = new JMenuItem("Ajuda");
+        JMenuItem aboutItem = new JMenuItem("Sobre");
 
-        salvarItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para salvar o arquivo
-            }
-        });
+        fileMenu.add(connectItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitMenu);
 
-        sairItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); // Encerrar a aplicação
-            }
-        });
+        helpMenu.add(helpItem);
+        helpMenu.add(aboutItem);
 
-        arquivoMenu.add(abrirItem);
-        arquivoMenu.add(salvarItem);
-        arquivoMenu.addSeparator(); // Adicionar um separador
-        arquivoMenu.add(sairItem);
-
-        menuBar.add(arquivoMenu);
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
         frame.setJMenuBar(menuBar);
+
+        JTextArea conversation = new JTextArea();
+        conversation.setEditable(false);
+        conversation.setLineWrap(true);
+        conversation.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(conversation);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(700, 700));
+
+        JPanel panel = new JPanel();
+
+        JTextField message = new JTextField();
+        message.setPreferredSize(new Dimension(300, 30));
+
+        JButton sendButton = new JButton("Enviar");
+
+        panel.add(message, BorderLayout.NORTH);
+        panel.add(sendButton, BorderLayout.CENTER);
+
+        JLabel statusLabel = new JLabel("Status da Conexão: ");
+
+        JPanel panel2 = new JPanel();
+        panel2.add(statusLabel);
+
+        frame.add(panel, BorderLayout.CENTER);
+
+
+        frame.add(panel2, BorderLayout.SOUTH);
+        frame.add(scrollPane, BorderLayout.NORTH);
+        frame.add(panel, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
