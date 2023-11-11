@@ -11,6 +11,46 @@ public class MainView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); ///TODO use gridlayout
 
+        createMenuBar(frame);
+
+        createConversationAreaWithScroll(frame);
+
+        JPanel panel = new JPanel();
+
+        JTextField message = new JTextField();
+        message.setPreferredSize(new Dimension(300, 30));
+
+        JButton sendButton = new JButton("Enviar");
+
+        panel.add(message, BorderLayout.NORTH);
+        panel.add(sendButton, BorderLayout.CENTER);
+        frame.add(panel, BorderLayout.CENTER);
+
+        JLabel statusLabel = new JLabel("Status da Conexão: ");
+
+        JPanel panel2 = new JPanel();
+        panel2.add(statusLabel);
+
+
+
+        frame.add(panel2, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private static void createConversationAreaWithScroll(JFrame frame) {
+        JTextArea conversationArea = new JTextArea();
+        conversationArea.setEditable(false);
+        conversationArea.setLineWrap(true);
+        conversationArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(conversationArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(700, 700));
+        frame.add(scrollPane, BorderLayout.NORTH);
+    }
+
+    private static void createMenuBar(JFrame frame) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("Arquivo");
@@ -25,45 +65,12 @@ public class MainView {
         fileMenu.add(connectItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenu);
+        menuBar.add(fileMenu);
 
         helpMenu.add(helpItem);
         helpMenu.add(aboutItem);
-
-        menuBar.add(fileMenu);
         menuBar.add(helpMenu);
+
         frame.setJMenuBar(menuBar);
-
-        JTextArea conversation = new JTextArea();
-        conversation.setEditable(false);
-        conversation.setLineWrap(true);
-        conversation.setWrapStyleWord(true);
-
-        JScrollPane scrollPane = new JScrollPane(conversation);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(700, 700));
-
-        JPanel panel = new JPanel();
-
-        JTextField message = new JTextField();
-        message.setPreferredSize(new Dimension(300, 30));
-
-        JButton sendButton = new JButton("Enviar");
-
-        panel.add(message, BorderLayout.NORTH);
-        panel.add(sendButton, BorderLayout.CENTER);
-
-        JLabel statusLabel = new JLabel("Status da Conexão: ");
-
-        JPanel panel2 = new JPanel();
-        panel2.add(statusLabel);
-
-        frame.add(panel, BorderLayout.CENTER);
-
-
-        frame.add(panel2, BorderLayout.SOUTH);
-        frame.add(scrollPane, BorderLayout.NORTH);
-        frame.add(panel, BorderLayout.CENTER);
-
-        frame.setVisible(true);
     }
 }
