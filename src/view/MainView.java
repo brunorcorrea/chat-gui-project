@@ -15,27 +15,33 @@ public class MainView {
 
         createConversationAreaWithScroll(frame);
 
-        JPanel panel = new JPanel();
+        createSendMessagePanel(frame);
+
+        createStatusPanel(frame);
+
+        frame.setVisible(true);
+    }
+
+    private static void createStatusPanel(JFrame frame) {
+        JLabel statusLabel = new JLabel("Status da Conexão: ");
+
+        JPanel statusPanel = new JPanel();
+        statusPanel.add(statusLabel);
+
+        frame.add(statusPanel, BorderLayout.SOUTH);
+    }
+
+    private static void createSendMessagePanel(JFrame frame) {
+        JPanel sendMessagePanel = new JPanel();
 
         JTextField message = new JTextField();
         message.setPreferredSize(new Dimension(300, 30));
 
         JButton sendButton = new JButton("Enviar");
 
-        panel.add(message, BorderLayout.NORTH);
-        panel.add(sendButton, BorderLayout.CENTER);
-        frame.add(panel, BorderLayout.CENTER);
-
-        JLabel statusLabel = new JLabel("Status da Conexão: ");
-
-        JPanel panel2 = new JPanel();
-        panel2.add(statusLabel);
-
-
-
-        frame.add(panel2, BorderLayout.SOUTH);
-
-        frame.setVisible(true);
+        sendMessagePanel.add(message, BorderLayout.NORTH);
+        sendMessagePanel.add(sendButton, BorderLayout.CENTER);
+        frame.add(sendMessagePanel, BorderLayout.CENTER);
     }
 
     private static void createConversationAreaWithScroll(JFrame frame) {
