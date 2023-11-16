@@ -68,6 +68,8 @@ public class MainView {
         JMenuItem helpItem = new JMenuItem("Ajuda");
         JMenuItem aboutItem = new JMenuItem("Sobre");
 
+        aboutItem.addActionListener(e -> new AboutDialog(frame));
+
         fileMenu.add(connectItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenu);
