@@ -19,6 +19,7 @@ public class AboutDialog extends JDialog {
             "Julia Gonzalez Leal - 260824");
 
     private Map<String, String> authorImages = new HashMap<>();
+
     public AboutDialog(JFrame parent) {
         super(parent, "Sobre", true);
 
@@ -39,11 +40,11 @@ public class AboutDialog extends JDialog {
         closeButton.addActionListener(closeEvent -> this.dispose());
         aboutPanel.add(closeButton, BorderLayout.SOUTH);
 
-        getContentPane().add(aboutPanel);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(parent);
-        setVisible(true);
+        this.getContentPane().add(aboutPanel);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(parent);
+        this.setVisible(true);
     }
 
     private void initializeAuthorImages() {
