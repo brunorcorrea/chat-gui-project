@@ -1,4 +1,3 @@
-import model.ClientImpl;
 import view.MainView;
 
 public class Main {

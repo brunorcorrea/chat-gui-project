@@ -1,6 +1,7 @@
 package view;
 
 import connect.ChatClient;
+import connect.ChatServer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.io.IOException;
 
 public class MainView {
     private ChatClient chatClient;
+    private ChatServer server = new ChatServer();
 
     public ChatClient getChatClient() {
         return chatClient;
@@ -45,14 +47,30 @@ public class MainView {
 
         mainFrame.setVisible(true);
 
-        while(true) {
+// try {
+//            server.start(1234);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        new Thread(() -> {
             try {
-                String message = chatClient.receiveMessage();
-                conversationArea.append(message + "\n");
+                server.start(1234);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }).start();
+
+//       new Thread(() -> {
+//            while (true) {
+//                try {
+//                    String message = server.receiveMessage();
+//                    conversationArea.append(message + "\n");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
 
     private void createStatusPanel(JFrame frame) {
