@@ -31,6 +31,15 @@ public class MainView {
 
     private JTextArea conversationArea;
     private JMenuBar menuBar;
+    private JLabel statusLabel;
+
+    public JLabel getStatusLabel() {
+        return statusLabel;
+    }
+
+    public void setStatusLabel(JLabel statusLabel) {
+        this.statusLabel = statusLabel;
+    }
 
     public void show() {
         mainFrame = new JFrame("Chat para conversação - GRUPO 10 - POO II");
@@ -47,34 +56,30 @@ public class MainView {
 
         mainFrame.setVisible(true);
 
-// try {
-//            server.start(1234);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         new Thread(() -> {
             try {
-                server.start(1234);
+                server.start(this, 123);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
 
-//       new Thread(() -> {
-//            while (true) {
-//                try {
-//                    String message = server.receiveMessage();
-//                    conversationArea.append(message + "\n");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+       new Thread(() -> {
+            while (true) {
+                try {
+                    String message = server.receiveMessage();
+                    if(message != null) {
+                        conversationArea.append("Server: " + message + "\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void createStatusPanel(JFrame frame) {
-        JLabel statusLabel = new JLabel("Status da Conexão: Não conectado   ");
+        statusLabel = new JLabel("Status da Conexão: Não conectado");
 
         JPanel statusPanel = new JPanel();
         statusPanel.add(statusLabel);
@@ -93,6 +98,14 @@ public class MainView {
             String messageText = message.getText();
             if (chatClient != null) {
                 chatClient.sendMessage(messageText);
+                conversationArea.append("Client: " + messageText + "\n");
+                message.setText("");
+            }
+
+            if (server != null) {
+                server.sendMessage(messageText);
+                conversationArea.append("Server: " + messageText + "\n");
+                message.setText("");
             }
         });
 

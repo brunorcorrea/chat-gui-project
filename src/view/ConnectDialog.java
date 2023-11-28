@@ -46,6 +46,7 @@ public class ConnectDialog extends JDialog {
                 int port = Integer.parseInt(portText);
                 mainView.setChatClient(new ChatClient());
                 mainView.getChatClient().connect(ipAddress, port);
+                mainView.getStatusLabel().setText("Status da Conexão: Conectado");
 
                 this.dispose();
             } catch (NumberFormatException ex) {
