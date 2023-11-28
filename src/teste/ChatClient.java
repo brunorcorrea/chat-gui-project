@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import static java.lang.System.exit;
+
 public class ChatClient implements Observer, Runnable {
     private Socket socket;
     private PrintWriter out;
@@ -24,13 +26,10 @@ public class ChatClient implements Observer, Runnable {
             while (true) {
                 // Simulate receiving a message from the server
                 String receivedMessage = in.readLine();
-                System.out.println("Received message from server: " + receivedMessage);
-
-                // Sleep for a while to simulate some processing
-                Thread.sleep(2000);
+                System.out.println("Them: " + receivedMessage);
             }
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -38,7 +37,7 @@ public class ChatClient implements Observer, Runnable {
     @Override
     public void update(String message) {
         // Send a message to the server when the client is updated
-        out.println("Client updated with message: " + message);
+        out.println(message);
     }
 
     public void disconnect() throws IOException {
@@ -48,14 +47,16 @@ public class ChatClient implements Observer, Runnable {
     }
 
     public static void main(String[] args) {
-        try (Socket socket = new Socket("127.0.0.1", 12345)) {
-            ChatClient client = new ChatClient(socket);
+        try {
+            ChatClient client = new ChatClient(new Socket("127.0.0.1", 12345));
 
             // Start a thread to handle incoming messages from the server
             new Thread(client).start();
 
             // Simulate sending a message to the server
-            client.update("Hello from client!");
+            String sentMessage = "Mensagem muito importante do cliente!";
+            System.out.println("You: " + sentMessage);
+            client.update(sentMessage);
 
         } catch (IOException e) {
             e.printStackTrace();

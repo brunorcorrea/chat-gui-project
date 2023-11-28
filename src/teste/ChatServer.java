@@ -6,6 +6,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.exit;
+import static java.lang.Thread.sleep;
+
 public class ChatServer implements Subject {
     private ServerSocket serverSocket;
     private List<Observer> observers = new ArrayList<>();
@@ -57,15 +60,22 @@ public class ChatServer implements Subject {
             // Waiting for messages from the client
             while (true) {
                 // Simulate receiving a message from the client
-                String receivedMessage = "Message from client: " + System.currentTimeMillis();
+                String receivedMessage = "Mensagem muito importante do servidor!";
+                System.out.println("You: " + receivedMessage);
                 server.notifyObservers(receivedMessage);
-
-                // Sleep for a while to simulate some processing
-                Thread.sleep(2000);
+                sleep(2000);
             }
-
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                server.stop();
+            } catch (IOException e) {
+                e.printStackTrace();
+                exit(1);
+            }
         }
     }
 }
