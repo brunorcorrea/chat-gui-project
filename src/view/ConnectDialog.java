@@ -1,10 +1,7 @@
 package view;
 
-import connect.ChatClient;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -48,20 +45,16 @@ public class ConnectDialog extends JDialog {
             try {
                 int port = Integer.parseInt(portText);
 
-                if (isLocalMachineIpAddress(ipAddress) && port == mainView.server.serverSocket.getLocalPort()) {
+                if (isLocalMachineIpAddress(ipAddress) && port == mainView.getController().getChatServer().getServerSocket().getLocalPort()) {
                     JOptionPane.showMessageDialog(mainView.getMainFrame(), "Você não pode se conectar ao seu próprio servidor.");
                     return;
                 }
 
-                mainView.setChatClient(new ChatClient());
-                mainView.getChatClient().connect(ipAddress, port);
-                mainView.getStatusLabel().setText("Status da Conexão: Conectado");
+                mainView.getController().startClient(ipAddress, port, mainView.getStatusLabel());
 
                 this.dispose();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(mainView.getMainFrame(), "A porta deve ser um número válido.");
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(mainView.getMainFrame(), "Erro ao conectar ao servidor.");
             }
         });
         return connectButton;
