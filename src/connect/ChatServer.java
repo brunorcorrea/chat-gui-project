@@ -10,16 +10,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ChatServer {
-    private ServerSocket serverSocket;
-    private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
+    public ServerSocket serverSocket;
+    public Socket clientSocket;
+    public PrintWriter out;
+    public BufferedReader in;
 
     public void start(MainView mainView, int port) throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Server waiting for connections on port " + port);
 
-        // Wait for a client connection
         clientSocket = serverSocket.accept();
         System.out.println("Client connected: " + clientSocket.getInetAddress().getHostAddress());
         mainView.getStatusLabel().setText("Status da Conexão: Conectado");

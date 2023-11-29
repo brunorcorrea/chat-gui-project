@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 public class MainView {
     private ChatClient chatClient;
     private ChatServer server = new ChatServer();
@@ -73,10 +75,18 @@ public class MainView {
                 try {
                     String message = server.receiveMessage();
                     if(message != null) {
-                        conversationArea.append("Server: " + message + "\n");
+                        conversationArea.append("Them: " + message + "\n");
+                    } else if(chatClient != null) {
+                        String message2 = chatClient.receiveMessage();
+                        if(message2 != null) {
+                            conversationArea.append("Them: " + message2 + "\n");
+                        }
                     }
+                    sleep(1000);
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }).start();
@@ -102,13 +112,13 @@ public class MainView {
             String messageText = message.getText();
             if (chatClient != null) {
                 chatClient.sendMessage(messageText);
-                conversationArea.append("Client: " + messageText + "\n");
+                conversationArea.append("You: " + messageText + "\n");
                 message.setText("");
             }
 
             if (server != null && server.clientSocket != null && !server.clientSocket.isClosed()) {
                 server.sendMessage(messageText);
-                conversationArea.append("Server: " + messageText + "\n");
+                conversationArea.append("You: " + messageText + "\n");
                 message.setText("");
             }
         });
