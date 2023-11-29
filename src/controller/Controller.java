@@ -47,14 +47,14 @@ public class Controller {
         new Thread(() -> {
             while (true) {
                 try {
-                    if(chatServer.getIn() != null) {
+                    if (chatServer.getIn() != null) {
                         String message = chatServer.receiveMessage();
-                        if(message != null) {
+                        if (message != null) {
                             conversationArea.append("Outro: " + message + "\n");
                         }
-                    } else if(chatClient != null && chatClient.getIn() != null) {
+                    } else if (chatClient != null && chatClient.getIn() != null) {
                         String message = chatClient.receiveMessage();
-                        if(message != null) {
+                        if (message != null) {
                             conversationArea.append("Outro: " + message + "\n");
                         }
                     }
@@ -69,7 +69,9 @@ public class Controller {
     }
 
     public void sendMessage(JTextField textField, JTextArea conversationArea) {
-        String messageText = textField.getText();
+        String messageText = textField.getText().trim();
+        if (messageText.isEmpty()) return;
+
         if (chatClient != null) {
             chatClient.sendMessage(messageText);
             conversationArea.append("Voce: " + messageText + "\n");
@@ -77,7 +79,7 @@ public class Controller {
         }
 
         var clientSocket = chatServer.getClientSocket();
-        if (clientSocket!= null && !clientSocket.isClosed()) {
+        if (clientSocket != null && !clientSocket.isClosed()) {
             chatServer.sendMessage(messageText);
             conversationArea.append("Voce: " + messageText + "\n");
             textField.setText("");
