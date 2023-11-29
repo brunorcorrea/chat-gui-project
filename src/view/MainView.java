@@ -57,10 +57,14 @@ public class MainView {
         mainFrame.setVisible(true);
 
         new Thread(() -> {
-            try {
-                server.start(this, 123);
-            } catch (IOException e) {
-                e.printStackTrace();
+            int port = 5000;
+            while (port < 6000) {
+                try {
+                    server.start(this, port);
+                    break;
+                } catch (IOException e) {
+                    port++;
+                }
             }
         }).start();
 
@@ -102,7 +106,7 @@ public class MainView {
                 message.setText("");
             }
 
-            if (server != null) {
+            if (server != null && server.clientSocket != null && !server.clientSocket.isClosed()) {
                 server.sendMessage(messageText);
                 conversationArea.append("Server: " + messageText + "\n");
                 message.setText("");
