@@ -4,9 +4,9 @@ import java.io.*;
 import java.net.Socket;
 
 public class ChatClient {
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
+    public Socket socket;
+    public PrintWriter out;
+    public BufferedReader in;
 
     public void connect(String ipAddress, int port) throws IOException {
         socket = new Socket(ipAddress, port);

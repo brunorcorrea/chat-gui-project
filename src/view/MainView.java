@@ -11,7 +11,7 @@ import static java.lang.Thread.sleep;
 
 public class MainView {
     private ChatClient chatClient;
-    private ChatServer server = new ChatServer();
+    public ChatServer server = new ChatServer();
 
     public ChatClient getChatClient() {
         return chatClient;
@@ -76,7 +76,7 @@ public class MainView {
                     String message = server.receiveMessage();
                     if(message != null) {
                         conversationArea.append("Them: " + message + "\n");
-                    } else if(chatClient != null) {
+                    } else if(chatClient != null && chatClient.in != null) {
                         String message2 = chatClient.receiveMessage();
                         if(message2 != null) {
                             conversationArea.append("Them: " + message2 + "\n");
