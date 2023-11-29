@@ -50,12 +50,12 @@ public class Controller {
                     if(chatServer.getIn() != null) {
                         String message = chatServer.receiveMessage();
                         if(message != null) {
-                            conversationArea.append("Them: " + message + "\n");
+                            conversationArea.append("Outro: " + message + "\n");
                         }
                     } else if(chatClient != null && chatClient.getIn() != null) {
                         String message = chatClient.receiveMessage();
                         if(message != null) {
-                            conversationArea.append("Them: " + message + "\n");
+                            conversationArea.append("Outro: " + message + "\n");
                         }
                     }
                     sleep(1000);
@@ -72,14 +72,14 @@ public class Controller {
         String messageText = textField.getText();
         if (chatClient != null) {
             chatClient.sendMessage(messageText);
-            conversationArea.append("You: " + messageText + "\n");
+            conversationArea.append("Voce: " + messageText + "\n");
             textField.setText("");
         }
 
         var clientSocket = chatServer.getClientSocket();
         if (clientSocket!= null && !clientSocket.isClosed()) {
             chatServer.sendMessage(messageText);
-            conversationArea.append("You: " + messageText + "\n");
+            conversationArea.append("Voce: " + messageText + "\n");
             textField.setText("");
         }
     }
