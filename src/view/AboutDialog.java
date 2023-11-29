@@ -9,16 +9,17 @@ import java.util.Map;
 public class AboutDialog extends JDialog {
     private static final String CURRENT_PATH = System.getProperty("user.dir");
     private static final String IMAGES_FOLDER = CURRENT_PATH + "\\src\\images\\";
-// TODO IF YOU ARE USING LINUX, NEED TO USE THE OTHER /
-    private String projectTitle = "Chat para conversação - GRUPO 10 - POO II";
-    private String authorsTitle = "Autores:";
-    private List<String> authors = List.of("Bruno Ricardo Corrêa - 260759",
+
+    private final String projectTitle = "Chat para conversação - GRUPO 10 - POO II";
+    private final String authorsTitle = "Autores:";
+    private final List<String> authors = List.of("Bruno Ricardo Corrêa - 260759",
             "Felipe Gabriel Viana Alves - 246258",
             "Igor Paulo dos Santos Santana - 198643",
             "João Gabriel Gomes Mariano - 247487",
             "Julia Gonzalez Leal - 260824");
 
-    private Map<String, String> authorImages = new HashMap<>();
+    private final Map<String, String> authorImages = new HashMap<>();
+
     public AboutDialog(JFrame parent) {
         super(parent, "Sobre", true);
 
@@ -39,11 +40,11 @@ public class AboutDialog extends JDialog {
         closeButton.addActionListener(closeEvent -> this.dispose());
         aboutPanel.add(closeButton, BorderLayout.SOUTH);
 
-        getContentPane().add(aboutPanel);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(parent);
-        setVisible(true);
+        this.getContentPane().add(aboutPanel);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(parent);
+        this.setVisible(true);
     }
 
     private void initializeAuthorImages() {
