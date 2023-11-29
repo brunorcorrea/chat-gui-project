@@ -1,47 +1,17 @@
 package view;
 
-import connect.ChatClient;
-import connect.ChatServer;
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-
-import static java.lang.Thread.sleep;
 
 public class MainView {
-    private ChatClient chatClient;
-    public ChatServer server = new ChatServer();
-
-    public ChatClient getChatClient() {
-        return chatClient;
-    }
-
-    public void setChatClient(ChatClient chatClient) {
-        this.chatClient = chatClient;
-    }
+    private final Controller controller = new Controller();
 
     private JFrame mainFrame;
-
-    public JFrame getMainFrame() {
-        return mainFrame;
-    }
-
-    public void setMainFrame(JFrame mainFrame) {
-        this.mainFrame = mainFrame;
-    }
-
     private JTextArea conversationArea;
     private JMenuBar menuBar;
     private JLabel statusLabel;
-
-    public JLabel getStatusLabel() {
-        return statusLabel;
-    }
-
-    public void setStatusLabel(JLabel statusLabel) {
-        this.statusLabel = statusLabel;
-    }
 
     public void show() {
         mainFrame = new JFrame("Chat para conversação - GRUPO 10 - POO II");
@@ -58,38 +28,8 @@ public class MainView {
 
         mainFrame.setVisible(true);
 
-        new Thread(() -> {
-            int port = 5000;
-            while (port < 6000) {
-                try {
-                    server.start(this, port);
-                    break;
-                } catch (IOException e) {
-                    port++;
-                }
-            }
-        }).start();
-
-       new Thread(() -> {
-            while (true) {
-                try {
-                    String message = server.receiveMessage();
-                    if(message != null) {
-                        conversationArea.append("Them: " + message + "\n");
-                    } else if(chatClient != null && chatClient.in != null) {
-                        String message2 = chatClient.receiveMessage();
-                        if(message2 != null) {
-                            conversationArea.append("Them: " + message2 + "\n");
-                        }
-                    }
-                    sleep(1000);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
+        controller.startServer(statusLabel);
+        controller.showReceivedMessage(conversationArea);
     }
 
     private void createStatusPanel(JFrame frame) {
@@ -104,26 +44,13 @@ public class MainView {
     private void createSendMessagePanel(JFrame frame) {
         JPanel sendMessagePanel = new JPanel();
 
-        JTextField message = new JTextField();
-        message.setPreferredSize(new Dimension(300, 30));
+        JTextField textField = new JTextField();
+        textField.setPreferredSize(new Dimension(300, 30));
 
         JButton sendButton = new JButton("Enviar");
-        sendButton.addActionListener(e -> {
-            String messageText = message.getText();
-            if (chatClient != null) {
-                chatClient.sendMessage(messageText);
-                conversationArea.append("You: " + messageText + "\n");
-                message.setText("");
-            }
+        sendButton.addActionListener(e -> controller.sendMessage(textField, conversationArea));
 
-            if (server != null && server.clientSocket != null && !server.clientSocket.isClosed()) {
-                server.sendMessage(messageText);
-                conversationArea.append("You: " + messageText + "\n");
-                message.setText("");
-            }
-        });
-
-        sendMessagePanel.add(message, BorderLayout.NORTH);
+        sendMessagePanel.add(textField, BorderLayout.NORTH);
         sendMessagePanel.add(sendButton, BorderLayout.CENTER);
         frame.add(sendMessagePanel, BorderLayout.CENTER);
     }
@@ -149,13 +76,9 @@ public class MainView {
 
         JMenuItem exitMenu = new JMenuItem("Sair");
         exitMenu.addActionListener(e -> {
-            if (chatClient != null) {
-                try {
-                    chatClient.disconnect();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+            controller.stopServer();
+            controller.stopClient(statusLabel);
+
             System.exit(0);
         });
 
@@ -176,5 +99,17 @@ public class MainView {
         menuBar.add(helpMenu);
 
         frame.setJMenuBar(menuBar);
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
+    }
+
+    public JLabel getStatusLabel() {
+        return statusLabel;
     }
 }
