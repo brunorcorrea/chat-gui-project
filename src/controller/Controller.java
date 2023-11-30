@@ -132,21 +132,16 @@ public class Controller {
     }
 
     private void handleIOException(IOException e) {
-        e.printStackTrace();
-
         SwingUtilities.invokeLater(() ->
                 JOptionPane.showMessageDialog(null, "Erro de E/S: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE));
     }
 
     private void handleSocketException(SocketException se) {
-        se.printStackTrace();
         SwingUtilities.invokeLater(() ->
-                JOptionPane.showMessageDialog(null, "Erro de Socket: " + se.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE));
+                JOptionPane.showMessageDialog(null, "Erro na conexão com o outro usuário: " + se.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE));
     }
 
     private void handleInterruptedException(InterruptedException ie) {
-        ie.printStackTrace();
-
         Thread.currentThread().interrupt();
         SwingUtilities.invokeLater(() ->
                 JOptionPane.showMessageDialog(null, "Thread interrompida: " + ie.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE));
