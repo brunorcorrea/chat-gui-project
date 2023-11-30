@@ -92,6 +92,7 @@ public class MainView {
 
         aboutItem.addActionListener(e -> new AboutDialog(frame));
         connectItem.addActionListener(e -> new ConnectDialog(this));
+        helpItem.addActionListener(e -> new HelpDialog(frame));
 
         fileMenu.add(connectItem);
         fileMenu.addSeparator();
