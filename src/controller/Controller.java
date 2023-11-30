@@ -42,6 +42,7 @@ public class Controller {
                 chatClient = new ChatClient();
                 chatClient.connect(ipAddress, port);
                 statusLabel.setText("Status da Conexão: Conectado");
+                serverStartedLatch.countDown();
             } catch (IOException e) {
                 handleIOException(e);
             }
