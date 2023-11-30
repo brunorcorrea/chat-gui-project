@@ -4,6 +4,8 @@ import controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainView {
     private final Controller controller = new Controller();
@@ -27,6 +29,13 @@ public class MainView {
         createStatusPanel(mainFrame);
 
         mainFrame.setVisible(true);
+
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeApplication();
+            }
+        });
 
         controller.startServer(statusLabel);
         controller.showReceivedMessage(conversationArea);
@@ -75,12 +84,7 @@ public class MainView {
         JMenuItem connectItem = new JMenuItem("Conectar");
 
         JMenuItem exitMenu = new JMenuItem("Sair");
-        exitMenu.addActionListener(e -> {
-            controller.stopServer();
-            controller.stopClient(statusLabel);
-
-            System.exit(0);
-        });
+        exitMenu.addActionListener(e -> closeApplication());
 
         JMenu helpMenu = new JMenu("Ajuda");
         JMenuItem helpItem = new JMenuItem("Ajuda");
@@ -99,6 +103,12 @@ public class MainView {
         menuBar.add(helpMenu);
 
         frame.setJMenuBar(menuBar);
+    }
+
+    private void closeApplication() {
+        controller.stopServer();
+        controller.stopClient();
+        System.exit(0);
     }
 
     public Controller getController() {
